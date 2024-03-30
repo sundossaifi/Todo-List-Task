@@ -1,15 +1,10 @@
-
 import UIKit
 
 protocol TodoTableViewCellDelegate {
-    func deleteButtonTapped(cell: TodoTableViewCell)
+    func deleteButtonTapped(indexPath: IndexPath)
 }
 
 class TodoTableViewCell: UITableViewCell {
-    
-    var delegate: TodoTableViewCellDelegate?
-    
-    static let identifier = "TodoTableViewCell"
     
     private lazy var taskCheckbox: Checkbox = {
         let taskCheckbox = Checkbox()
@@ -31,7 +26,10 @@ class TodoTableViewCell: UITableViewCell {
         deleteButton.layer.cornerRadius = 10
         deleteButton.tintColor = .systemRed
         deleteButton.addAction(UIAction(handler:{ [weak self] _ in
-            self?.delegate?.deleteButtonTapped(cell: self!)
+            guard let indexPath = self?.indexPath else{
+                return
+            }
+            self?.delegate?.deleteButtonTapped(indexPath: indexPath)
         }), for: .touchUpInside)
         return deleteButton
     }()
@@ -45,6 +43,12 @@ class TodoTableViewCell: UITableViewCell {
         cellStackView.alignment = .center
         return cellStackView
     }()
+    
+    var delegate: TodoTableViewCellDelegate?
+    
+    static let identifier = "TodoTableViewCell"
+    
+    var indexPath: IndexPath?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -69,38 +73,39 @@ class TodoTableViewCell: UITableViewCell {
             taskCheckbox.widthAnchor.constraint(equalToConstant: 25),
             taskCheckbox.heightAnchor.constraint(equalToConstant: 25),
         ])
-        
         cellStackView.addArrangedSubview(deleteButton)
         cellStackView.addArrangedSubview(taskLabel)
         cellStackView.addArrangedSubview(taskCheckbox)
         deleteButton.isHidden = true
-        
-        
     }
     
-    func configureCell (title: String , checked: Bool){
+    func configureCell (title: String, checked: Bool, indexPath: IndexPath) {
         taskLabel.text = title
-        taskCheckbox.checked = checked
+        taskCheckbox.isChecked = checked
+        self.indexPath = indexPath
     }
     
-    func toggleDeleteButtonVisiblity(isEditing :Bool){
+    func toggleDeleteButtonVisiblity(isEditing :Bool) {
         UIView.animate(withDuration: 0.3) {
-            self.deleteButton.isHidden = isEditing
+            self.deleteButton.isHidden = !isEditing
         }
     }
 }
 
 extension TodoTableViewCell: CheckboxDelegate {
-    func checkboxTapped(checkbox: Checkbox, isChecked: Bool) {
-        let attributedString = NSMutableAttributedString(string:taskLabel.text!)
-        if isChecked {
-            attributedString.addAttribute(.strikethroughStyle,value: 2, range: NSMakeRange(0, attributedString.length-1))
+    func checkboxTapped(isChecked: Bool) {
+        if let text = taskLabel.text {
+            let attributedString = NSMutableAttributedString(string: text)
+            
+            if isChecked {
+                attributedString.addAttribute(.strikethroughStyle, value: 2, range: NSRange(location: 0, length: attributedString.length))
+            } else {
+                attributedString.removeAttribute(.strikethroughStyle, range: NSRange(location: 0, length: attributedString.length))
+            }
+            taskLabel.attributedText = attributedString
+        } else {
+            taskLabel.attributedText = nil
         }
-        else {
-            attributedString.removeAttribute(.strikethroughStyle, range: NSMakeRange(0, attributedString.length-1))
-        }
-        
-        taskLabel.attributedText = attributedString
     }
 }
 

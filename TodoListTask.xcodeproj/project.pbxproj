@@ -12,7 +12,7 @@
 		CE7C1B8C2BB48DE800BA0787 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE7C1B8B2BB48DE800BA0787 /* Assets.xcassets */; };
 		CE7C1B8F2BB48DE800BA0787 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = CE7C1B8E2BB48DE800BA0787 /* Base */; };
 		CE7C1B972BB4951800BA0787 /* TodoListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C1B962BB4951800BA0787 /* TodoListVC.swift */; };
-		CE7C1B992BB495BF00BA0787 /* TodoTaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C1B982BB495BF00BA0787 /* TodoTaks.swift */; };
+		CE7C1B992BB495BF00BA0787 /* TodoTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C1B982BB495BF00BA0787 /* TodoTask.swift */; };
 		CE7C1B9B2BB49D1900BA0787 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C1B9A2BB49D1800BA0787 /* Checkbox.swift */; };
 		CE7C1BBF2BB4B7E900BA0787 /* TodoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C1BBE2BB4B7E900BA0787 /* TodoTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -25,7 +25,7 @@
 		CE7C1B8E2BB48DE800BA0787 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE7C1B902BB48DE800BA0787 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE7C1B962BB4951800BA0787 /* TodoListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListVC.swift; sourceTree = "<group>"; };
-		CE7C1B982BB495BF00BA0787 /* TodoTaks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTaks.swift; sourceTree = "<group>"; };
+		CE7C1B982BB495BF00BA0787 /* TodoTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTask.swift; sourceTree = "<group>"; };
 		CE7C1B9A2BB49D1800BA0787 /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		CE7C1BBE2BB4B7E900BA0787 /* TodoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -65,7 +65,7 @@
 				CE7C1B962BB4951800BA0787 /* TodoListVC.swift */,
 				CE7C1BBE2BB4B7E900BA0787 /* TodoTableViewCell.swift */,
 				CE7C1B9A2BB49D1800BA0787 /* Checkbox.swift */,
-				CE7C1B982BB495BF00BA0787 /* TodoTaks.swift */,
+				CE7C1B982BB495BF00BA0787 /* TodoTask.swift */,
 				CE7C1B8B2BB48DE800BA0787 /* Assets.xcassets */,
 				CE7C1B8D2BB48DE800BA0787 /* LaunchScreen.storyboard */,
 				CE7C1B902BB48DE800BA0787 /* Info.plist */,
@@ -147,7 +147,7 @@
 				CE7C1B972BB4951800BA0787 /* TodoListVC.swift in Sources */,
 				CE7C1B852BB48DE600BA0787 /* SceneDelegate.swift in Sources */,
 				CE7C1BBF2BB4B7E900BA0787 /* TodoTableViewCell.swift in Sources */,
-				CE7C1B992BB495BF00BA0787 /* TodoTaks.swift in Sources */,
+				CE7C1B992BB495BF00BA0787 /* TodoTask.swift in Sources */,
 				CE7C1B9B2BB49D1900BA0787 /* Checkbox.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

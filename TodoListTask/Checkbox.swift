@@ -2,18 +2,21 @@
 import UIKit
 
 protocol CheckboxDelegate {
-    func checkboxTapped(checkbox:Checkbox, isChecked:Bool)
+    func checkboxTapped(isChecked:Bool)
 }
 
 class Checkbox: UIButton {
-    
     var delegate: CheckboxDelegate?
-    
-    private var image: UIImage {
-        return checked ? UIImage(systemName: "checkmark.square.fill")! : UIImage(systemName: "square")!
+
+    private var image: UIImage? {
+        if let image = isChecked ? UIImage(systemName: "checkmark.square.fill") : UIImage(systemName: "square") {
+            return image
+        } else {
+            return nil
+        }
     }
-    
-    public var checked: Bool = false {
+
+    public var isChecked: Bool = false {
         didSet{
             self.setBackgroundImage(image, for: .normal)
         }
@@ -32,13 +35,13 @@ class Checkbox: UIButton {
     func setupCheckbox() {
         self.setBackgroundImage(image, for: .normal)
         self.addAction(UIAction(handler: {  [weak self] _ in
-            self?.buttonChecked()}), for: .touchUpInside)
+            self?.toggleCheckbox()}), 
+            for: .touchUpInside)
     }
     
-    func buttonChecked() {
-        self.checked.toggle()
-        self.delegate?.checkboxTapped(checkbox:self, isChecked:self.checked)
+    func toggleCheckbox() {
+        self.isChecked.toggle()
+        self.delegate?.checkboxTapped(isChecked:self.isChecked)
         sendActions(for: .valueChanged)
     }
-    
 }

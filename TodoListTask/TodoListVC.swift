@@ -1,16 +1,6 @@
-
-
 import UIKit
 
 class TodoListVC: UIViewController {
-    var isEditingTable = true
-    
-    var tasks = [
-        TodoTaks(title: "Communication task (Protocol)"),
-        TodoTaks(title: "User interface constraints"),
-        TodoTaks(title: "UITableView/UICollectionView")
-    ]
-    
     private lazy var tasksTable:UITableView = {
         let tasksTable = UITableView()
         tasksTable.register(TodoTableViewCell.self, forCellReuseIdentifier: TodoTableViewCell.identifier)
@@ -18,25 +8,16 @@ class TodoListVC: UIViewController {
         
         tasksTable.dataSource = self
         tasksTable.delegate = self
-        
         return tasksTable
-        
     }()
     
-    private lazy var addTaskAlert:UIAlertController = {
-        let addTaskAlert = UIAlertController(title: "New Task", message: "Add a new task", preferredStyle: .alert)
-        addTaskAlert.addTextField { textField in
-            textField.placeholder = "Enter task"
-        }
-        addTaskAlert.addAction(UIAlertAction(title: "Add", style: .default, handler: { (action) in
-            if let taskName = addTaskAlert.textFields?.first?.text {
-                self.tasks.append(TodoTaks(title: taskName))
-                self.tasksTable.reloadData()
-            }
-        }))
-        return addTaskAlert
-    }()
+    var isEditingTable = false
     
+    var tasks = [
+        TodoTask(title: "Communication task (Protocol)"),
+        TodoTask(title: "User interface constraints"),
+        TodoTask(title: "UITableView/UICollectionView")
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,8 +25,6 @@ class TodoListVC: UIViewController {
         
         setupTableView()
         setupNavigationBar()
-        
-        
     }
     
     func setupNavigationBar() {
@@ -54,7 +33,7 @@ class TodoListVC: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action:#selector(editTask))
     }
     
-    func setupTableView(){
+    func setupTableView() {
         view.addSubview(tasksTable)
         
         NSLayoutConstraint.activate([
@@ -65,17 +44,24 @@ class TodoListVC: UIViewController {
         ])
     }
     
-    
     @objc func addTask() {
+        let addTaskAlert = UIAlertController(title: "New Task", message: "Add a new task", preferredStyle: .alert)
+        addTaskAlert.addTextField { textField in
+            textField.placeholder = "Enter task"
+        }
+        addTaskAlert.addAction(UIAlertAction(title: "Add", style: .default, handler: { (action) in
+            if let taskName = addTaskAlert.textFields?.first?.text {
+                self.tasks.append(TodoTask(title: taskName))
+                self.tasksTable.reloadData()
+            }
+        }))
         present(addTaskAlert, animated: true)
     }
     
     @objc func editTask() {
         isEditingTable.toggle()
         tasksTable.reloadData()
-        
     }
-    
 }
 
 extension TodoListVC: UITableViewDataSource, UITableViewDelegate {
@@ -85,10 +71,12 @@ extension TodoListVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tasksTable.dequeueReusableCell(withIdentifier: TodoTableViewCell.identifier, for: indexPath) as!TodoTableViewCell
+        guard let cell = tasksTable.dequeueReusableCell(withIdentifier: TodoTableViewCell.identifier, for: indexPath) as?TodoTableViewCell else {
+            return UITableViewCell()
+        }
         cell.delegate = self
         let task = tasks[indexPath.row]
-        cell.configureCell(title: task.title, checked: task.isComplete)
+        cell.configureCell(title: task.title, checked: task.isComplete, indexPath: indexPath)
         return cell
     }
     
@@ -110,13 +98,9 @@ extension TodoListVC: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension TodoListVC: TodoTableViewCellDelegate {
-    func deleteButtonTapped(cell: TodoTableViewCell) {
-        guard let indexPath = self.tasksTable.indexPath(for: cell) else{
-            return
-        }
+    func deleteButtonTapped(indexPath: IndexPath) {
         self.tasks.remove(at: indexPath.row)
         self.tasksTable.deleteRows(at: [indexPath], with: .automatic)
+        self.tasksTable.reloadRows(at: [indexPath], with: .automatic)
     }
-    
-    
 }
